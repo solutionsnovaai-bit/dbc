@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark light" />
+
+    <title>DBC Du Binho Cred's | Crédito para MEI e pequenas empresas em São Paulo</title>
+    <meta data-rh="true" name="description" content="Empresa Simples de Crédito com capital próprio. Crédito para MEI, micro e pequenas empresas de São Paulo e cidades vizinhas, sem tarifas e com atendimento personalizado." />
+    <link data-rh="true" rel="canonical" href="%VITE_SITE_URL%/" />
+
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph (estático: WhatsApp, Instagram e Facebook não executam JS) -->
+    <meta data-rh="true" property="og:type" content="website" />
+    <meta data-rh="true" property="og:locale" content="pt_BR" />
+    <meta data-rh="true" property="og:site_name" content="DBC Du Binho Cred's" />
+    <meta data-rh="true" property="og:title" content="DBC Du Binho Cred's | Empresa Simples de Crédito" />
+    <meta data-rh="true" property="og:description" content="Crédito com capital próprio para MEI, micro e pequenas empresas de São Paulo. Sem tarifas e com análise do seu negócio." />
+    <meta data-rh="true" property="og:url" content="%VITE_SITE_URL%/" />
+    <meta data-rh="true" property="og:image" content="%VITE_SITE_URL%/og-dbc.jpg" />
+    <meta data-rh="true" property="og:image:width" content="1200" />
+    <meta data-rh="true" property="og:image:height" content="630" />
+    <meta data-rh="true" property="og:image:alt" content="Logo DBC Du Binho Cred's em metal sobre fundo preto" />
+
+    <!-- Twitter -->
+    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+    <meta data-rh="true" name="twitter:title" content="DBC Du Binho Cred's | Empresa Simples de Crédito" />
+    <meta data-rh="true" name="twitter:description" content="Crédito com capital próprio para MEI, micro e pequenas empresas de São Paulo. Sem tarifas e com análise do seu negócio." />
+    <meta data-rh="true" name="twitter:image" content="%VITE_SITE_URL%/og-dbc.jpg" />
+
+    <!-- Hero: pré-carrega só a versão que a tela vai usar -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      imagesrcset="/img/hero-desktop-760.webp 760w, /img/hero-desktop-1400.webp 1400w, /img/hero-desktop-1672.webp 1672w"
+      imagesizes="100vw"
+      media="(min-width: 1024px) and (min-aspect-ratio: 5/4)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      imagesrcset="/img/hero-mobile-760.webp 760w, /img/hero-mobile-941.webp 941w"
+      imagesizes="100vw"
+      media="not all and (min-width: 1024px) and (min-aspect-ratio: 5/4)"
+      fetchpriority="high"
+    />
+
+    <style>
+      html, body { background: #000; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="color:#fff;font-family:system-ui,sans-serif;padding:24px">
+        DBC Du Binho Cred's, Empresa Simples de Crédito em São Paulo. Peça sua análise pelo WhatsApp (11) 91742-7750.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

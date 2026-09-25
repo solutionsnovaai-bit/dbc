@@ -1,0 +1,647 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   TOKENS — preto e branco da marca, com o metal do logo como único acento
+   ============================================================ */
+@theme {
+  --color-preto: #000000;   /* hero, loader, rodapé: o mesmo preto das imagens */
+  --color-carbono: #0d0e10; /* folhas escuras */
+  --color-grafite: #1c1e22; /* superfícies sobre o carbono */
+  --color-fio: #2c2f35;     /* fios e bordas no escuro */
+  --color-aco: #8b9098;     /* texto secundário */
+  --color-prata: #c4c8ce;   /* texto sobre o escuro */
+  --color-nevoa: #e9ebee;   /* folhas claras: branco frio, puxado para o prata */
+  --color-branco: #ffffff;
+
+  --font-display: 'Bodoni Moda Variable', 'Bodoni Moda', 'Bodoni 72', Didot, Georgia, serif;
+  --font-sans: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-folha: 2.5rem;
+}
+
+/* Lenis (o CSS do pacote não é exportado, então vai aqui) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  html {
+    background: var(--color-preto);
+    color: var(--color-branco);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: 6rem;
+  }
+  html,
+  body {
+    overflow-x: clip;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+  html.travado,
+  html.travado body {
+    overflow: hidden;
+  }
+  ::selection {
+    background: var(--color-prata);
+    color: var(--color-preto);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-prata);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  img,
+  video {
+    max-width: 100%;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ============================================================
+   TIPOGRAFIA
+   ============================================================ */
+@layer components {
+  .titulo-hero {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.45rem, 10.4vw, 3.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.022em;
+  }
+  .titulo-secao {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.35rem, 5.4vw, 4.9rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .titulo-card {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.45rem, 2vw, 1.8rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+  .texto-corpo {
+    font-size: 1.0625rem;
+    line-height: 1.62;
+  }
+  .texto-miudo {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  /* Rótulo derivado da tagline itálica do logo: a Linha + itálico, sem caixa alta */
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-style: italic;
+    font-size: 0.95rem;
+    letter-spacing: 0.005em;
+    color: var(--color-aco);
+  }
+  .kicker::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.8;
+  }
+
+  /* Metal do logo, só em destaques */
+  .texto-metal {
+    background-image: linear-gradient(100deg, #8b9098 0%, #f4f5f7 36%, #a1a6ae 55%, #ffffff 72%, #8b9098 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .texto-onix {
+    background-image: linear-gradient(100deg, #1c1e22 0%, #4a4e55 34%, #0d0e10 55%, #3a3d43 76%, #0d0e10 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .texto-contorno {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6);
+  }
+
+  /* Sublinhado que é a Linha: nasce na esquerda, sai pela direita */
+  .link-linha {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+    transition: background-size 0.55s var(--ease-lux);
+    padding-bottom: 2px;
+  }
+  .link-linha:hover,
+  .link-linha:focus-visible {
+    background-size: 100% 1px;
+    background-position: 0% 100%;
+  }
+
+  /* ============================================================
+     BOTÕES
+     ============================================================ */
+  .btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    height: 3.25rem;
+    padding: 0 1.6rem;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.975rem;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+      transform 0.45s var(--ease-lux),
+      scale 0.2s var(--ease-lux),
+      background-color 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .btn:active {
+    scale: 0.97;
+  }
+  .btn svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    flex: none;
+  }
+  /* Reflexo de metal que atravessa no hover */
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 32%, var(--brilho, rgba(255, 255, 255, 0.5)) 50%, transparent 68%);
+    transform: translateX(-130%);
+    transition: transform 0.95s var(--ease-lux);
+    pointer-events: none;
+  }
+  .btn:hover::after {
+    transform: translateX(130%);
+  }
+  .btn-claro {
+    background: var(--color-branco);
+    color: var(--color-preto);
+    --brilho: rgba(139, 144, 152, 0.38);
+  }
+  .btn-claro:hover {
+    background: #f2f3f5;
+  }
+  .btn-escuro {
+    background: var(--color-preto);
+    color: var(--color-branco);
+    --brilho: rgba(255, 255, 255, 0.28);
+  }
+  .btn-escuro:hover {
+    background: #16171a;
+  }
+  .btn-vazado {
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    color: var(--color-branco);
+    --brilho: rgba(255, 255, 255, 0.12);
+  }
+  .btn-vazado:hover {
+    border-color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .btn-vazado-escuro {
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    color: var(--color-preto);
+    --brilho: rgba(0, 0, 0, 0.06);
+  }
+  .btn-vazado-escuro:hover {
+    border-color: rgba(0, 0, 0, 0.8);
+  }
+  .btn-pequeno {
+    height: 2.5rem;
+    padding: 0 1.1rem;
+    font-size: 0.9rem;
+  }
+  .btn-grande {
+    height: 3.75rem;
+    padding: 0 2rem;
+    font-size: 1.05rem;
+  }
+
+  /* ============================================================
+     FOLHAS (seções arredondadas que sobem uma sobre a outra)
+     ============================================================ */
+  .folha {
+    position: relative;
+    margin-top: calc(var(--radius-folha) * -1);
+    border-radius: var(--radius-folha) var(--radius-folha) 0 0;
+    overflow: clip;
+    transform-origin: 50% 0%;
+  }
+  /* A sombra sólida estende a cor da folha por baixo da seguinte:
+     quando a próxima folha entra encolhida, as laterais mostram esta cor, não um buraco preto. */
+  .folha-clara {
+    background: var(--color-nevoa);
+    color: var(--color-preto);
+    box-shadow: 0 45vh 0 0 var(--color-nevoa);
+  }
+  .folha-escura {
+    background: var(--color-carbono);
+    color: var(--color-branco);
+    box-shadow:
+      0 45vh 0 0 var(--color-carbono),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+  .folha-preta {
+    background: var(--color-preto);
+    color: var(--color-branco);
+    box-shadow:
+      0 45vh 0 0 var(--color-preto),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+  .conteiner {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+  }
+
+  /* Grão de filme, estático e leve (só no desktop) */
+  .grao {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+}
+
+/* ============================================================
+   HERO
+   Mobile/retrato: imagem vertical ancorada no topo, texto embaixo.
+   Desktop paisagem: imagem ancorada à direita, dimensionada para o logo
+   nunca encostar no texto e nunca ser cortado.
+   ============================================================ */
+.hero {
+  position: relative;
+  height: 100svh;
+  min-height: 640px;
+  overflow: clip;
+  background: var(--color-preto);
+  --hero-col: min(100%, 36rem);
+}
+.hero-midia {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.hero-quadro {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 941 / 1672;
+}
+.hero-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* A luz que acende o metal. Só se move por transform (GPU): nada de repintar a imagem a cada quadro.
+   O círculo é do tamanho da luz; o centro fica sobre o logo; com mouse o JS desloca, no toque o CSS passeia. */
+.hero-luz,
+.hero-halo {
+  position: absolute;
+  left: -3%;
+  top: -5.4%;
+  width: 108%;
+  aspect-ratio: 1;
+  pointer-events: none;
+  will-change: transform;
+  --ax: 27.8%;
+  --ay: 8.2%;
+}
+.hero-luz {
+  mix-blend-mode: overlay;
+}
+.luz-x,
+.luz-y,
+.luz-gradiente {
+  width: 100%;
+  height: 100%;
+}
+.hero-luz .luz-gradiente {
+  background: radial-gradient(
+    circle closest-side,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.22) 41%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+.hero-halo .luz-gradiente {
+  background: radial-gradient(circle closest-side, rgba(255, 248, 238, 0.07) 0%, rgba(255, 248, 238, 0) 77%);
+}
+@keyframes luz-x {
+  from {
+    transform: translate3d(calc(var(--ax) * -1), 0, 0);
+  }
+  to {
+    transform: translate3d(var(--ax), 0, 0);
+  }
+}
+@keyframes luz-y {
+  from {
+    transform: translate3d(0, calc(var(--ay) * -1), 0);
+  }
+  to {
+    transform: translate3d(0, var(--ay), 0);
+  }
+}
+.hero[data-passeio='true'] .luz-x {
+  animation: luz-x 7.5s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.hero[data-passeio='true'] .luz-y {
+  animation: luz-y 4.7s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.hero[data-ativo='false'] .luz-x,
+.hero[data-ativo='false'] .luz-y {
+  animation-play-state: paused;
+}
+.hero-veu {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.92) 30%, rgba(0, 0, 0, 0.35) 52%, rgba(0, 0, 0, 0) 64%);
+}
+.hero-conteudo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  will-change: transform, opacity;
+  padding: 0 clamp(1.25rem, 6vw, 2.5rem) max(2.25rem, env(safe-area-inset-bottom));
+}
+
+@media (min-width: 1024px) and (min-aspect-ratio: 5/4) {
+  .hero {
+    --hero-col: clamp(27rem, 37vw, 40rem);
+    --hero-pad: clamp(2.5rem, 5.5vw, 6rem);
+  }
+  .hero-quadro {
+    top: 50%;
+    left: auto;
+    right: 0;
+    width: auto;
+    /* 0.93 ≈ largura do logo (51% da imagem) em unidades de altura, com folga */
+    height: min(100%, calc((100vw - var(--hero-col) - var(--hero-pad) * 1.6) / 0.93));
+    aspect-ratio: 1672 / 941;
+    translate: 0 -50%;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top, transparent 0%, #000 16%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top, transparent 0%, #000 16%);
+    mask-composite: intersect;
+  }
+  .hero-luz,
+  .hero-halo {
+    left: 44%;
+    top: -8%;
+    width: 54%;
+    --ax: 31.5%;
+    --ay: 7.3%;
+  }
+  .hero-veu {
+    background: radial-gradient(ellipse 60% 80% at 18% 55%, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0) 70%);
+  }
+  .hero-conteudo {
+    top: 50%;
+    bottom: auto;
+    right: auto;
+    width: calc(var(--hero-col) + var(--hero-pad));
+    padding: 0 0 0 var(--hero-pad);
+    translate: 0 -46%;
+  }
+  .titulo-hero {
+    font-size: clamp(2.7rem, 3.95vw, 4.4rem);
+  }
+}
+
+@media (max-height: 700px) and (max-width: 1023px) {
+  .titulo-hero {
+    font-size: 2.3rem;
+  }
+}
+
+/* ============================================================
+   FAIXAS
+   ============================================================ */
+@keyframes faixa {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.faixa-trilho {
+  display: flex;
+  width: max-content;
+  animation: faixa var(--duracao, 40s) linear infinite;
+}
+.faixa:hover .faixa-trilho,
+.faixa[data-ativo='false'] .faixa-trilho {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   TIMER DO CARROSSEL (a Linha enchendo)
+   ============================================================ */
+@keyframes linha-timer {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.linha-timer {
+  transform-origin: left;
+  animation: linha-timer var(--dur, 4.6s) linear forwards;
+}
+.linha-timer[data-pausado='true'] {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   CARROSSEL DAS CONQUISTAS: trocas por transição CSS (compositor da GPU)
+   ============================================================ */
+.conquista {
+  transform: scale(0.88);
+  transition: transform 1.05s var(--ease-lux);
+}
+.conquista.is-ativa {
+  transform: scale(1);
+}
+.conquista-img {
+  transform: scale(1.04);
+  transition: transform 1s var(--ease-lux);
+}
+.conquista.is-ativa .conquista-img {
+  animation: ken-burns calc(var(--dur, 4.6s) + 1.2s) cubic-bezier(0.2, 0.6, 0.35, 1) both;
+}
+@keyframes ken-burns {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.conquista-veu {
+  opacity: 0.52;
+  transition: opacity 1.05s var(--ease-lux);
+}
+.conquista.is-ativa .conquista-veu {
+  opacity: 0;
+}
+.conquista-degrade {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.conquista.is-ativa .conquista-degrade {
+  opacity: 1;
+}
+.conquista-legenda {
+  transform: translate3d(0, 130%, 0);
+  transition: transform 0.95s var(--ease-lux);
+}
+.conquista.is-ativa .conquista-legenda {
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.35s;
+}
+.conquista-numero {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.conquista.is-ativa .conquista-numero {
+  opacity: 1;
+  transition-delay: 0.5s;
+}
+
+/* ============================================================
+   MOEDA DBC (CSS puro até a medalha fotografada chegar)
+   ============================================================ */
+.moeda {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+}
+.moeda-borda {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg, #d9dce0 0deg 1.2deg, #7d828a 1.2deg 2.4deg),
+    #a9adb4;
+  box-shadow:
+    0 30px 60px -20px rgba(0, 0, 0, 0.45),
+    0 12px 24px -12px rgba(0, 0, 0, 0.35);
+}
+.moeda-campo {
+  position: absolute;
+  inset: 5.5%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 42%),
+    radial-gradient(circle at 70% 78%, rgba(120, 125, 133, 0.55), rgba(120, 125, 133, 0) 55%),
+    linear-gradient(145deg, #f4f5f7 0%, #c9ccd1 45%, #eef0f2 70%, #a4a9b0 100%);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.9),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.28);
+}
+.moeda-aro {
+  position: absolute;
+  inset: 11%;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+.moeda-relevo {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 50%;
+  aspect-ratio: 1064 / 295;
+  translate: 0 -50%;
+  background: linear-gradient(160deg, #6f747c 0%, #c9ccd1 38%, #7d828a 62%, #4f545b 100%);
+  -webkit-mask: var(--mascara) center / contain no-repeat;
+  mask: var(--mascara) center / contain no-repeat;
+  filter: drop-shadow(0 1.5px 0 rgba(255, 255, 255, 0.95)) drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.3));
+}
+
+@media (pointer: coarse) {
+  .grao {
+    display: none;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .faixa-trilho {
+    animation: none;
+  }
+  .linha-timer {
+    animation-play-state: paused;
+  }
+  .conquista,
+  .conquista * {
+    transition: none !important;
+    animation: none !important;
+  }
+  .btn,
+  .btn::after,
+  .link-linha {
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
